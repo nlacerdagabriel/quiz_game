@@ -7,18 +7,16 @@ import { AppContext } from "../../contexts/AppContext";
 interface IAnswerProps {
   data: IAnswers;
   changeScore: (isCorrect: boolean, amount: number) => void;
-  isAnswered: boolean;
   toggleAnswer: () => void;
 }
 
 export const Answer = ({
   data,
   changeScore,
-  isAnswered,
   toggleAnswer,
 }: IAnswerProps) => {
   const [background, setBackground] = useState("");
-  const { toggleLostModalVisible, toggleIsAnswerSelectedCorrect } =
+  const { toggleLostModalVisible, toggleIsAnswerSelectedCorrect, isAnswered} =
     useContext(AppContext);
   const [disableButton, setDisableButton] = useState(false);
 
@@ -27,7 +25,10 @@ export const Answer = ({
       if (data.isCorrect) {
         setBackground(theme.colors.success);
       }
-      handleDisableButton();
+      toggleDisableButton();
+    }else{
+      setBackground(theme.colors.white)
+      toggleDisableButton
     }
   }, [isAnswered]);
 
@@ -45,9 +46,11 @@ export const Answer = ({
     }
   };
 
-  const handleDisableButton = () => {
-    setDisableButton(true);
+  const toggleDisableButton = () => {
+    setDisableButton(!disableButton);
   };
+
+
 
   return (
     <Container

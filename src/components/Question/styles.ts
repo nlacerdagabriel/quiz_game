@@ -13,4 +13,6 @@ export const Title = styled.h1`
   font-weight: 700;
 
   text-align: center;
+
+  margin-bottom: 1rem;
 `

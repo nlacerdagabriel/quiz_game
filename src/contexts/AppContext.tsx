@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { IQuestion, questions } from "../data/questions";
 
 interface IProps {
   children: React.ReactNode;
@@ -13,6 +14,11 @@ interface IAppContextProps {
   isAnswerSelectedCorrect: boolean;
   toggleIsAnswerSelectedCorrect: (isCorrect: boolean) => void;
   restartQuiz: () => void;
+  questionsList: IQuestion[];
+  currentQuestion: IQuestion;
+  handleCorrectAnswer: () => void;
+  isAnswered: boolean;
+  toggleIsAnswered: () => void;
 }
 
 export const AppContext = createContext<IAppContextProps>(
@@ -22,7 +28,14 @@ export const AppContext = createContext<IAppContextProps>(
 export const AppProvider: React.FC<IProps> = ({ children }) => {
   const [score, setScore] = useState(0);
   const [isModalLostVisible, setIsModalLostVisible] = useState(false);
-  const [isAnswerSelectedCorrect, setisAnswerSelectedCorrect] = useState(false);
+  const [isAnswerSelectedCorrect, setIsAnswerSelectedCorrect] = useState(false);
+  const [questionsList, setQuestionsList] = useState(questions);
+  const [currentQuestion, setCurrentQuestion] = useState(questionsList[0]);
+  const [isAnswered, setIsAnswered] = useState(false);
+
+  const toggleIsAnswered = useCallback(() => {
+    setIsAnswered(!isAnswered)
+  }, [])
 
   const toggleLostModalVisible = useCallback((toggle: boolean) => {
     setIsModalLostVisible(toggle);
@@ -36,11 +49,27 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
     setScore(0);
   }, []);
 
+  const handleCorrectAnswer = () => {
+    if (isAnswerSelectedCorrect) {
+      let newList: IQuestion[] = [];
+
+
+      questions.filter((it) => {
+        if (it.question !== currentQuestion.question) {
+          newList.push(it)
+        }
+      });
+
+      setQuestionsList([...newList])
+      setCurrentQuestion(questionsList[0])
+    }
+  };
+
   const toggleIsAnswerSelectedCorrect = useCallback((isCorrect: boolean) => {
     if (isCorrect) {
-      setisAnswerSelectedCorrect(true);
+      setIsAnswerSelectedCorrect(true);
     } else {
-      setisAnswerSelectedCorrect(false);
+      setIsAnswerSelectedCorrect(false);
     }
   }, []);
 
@@ -54,6 +83,11 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
         isAnswerSelectedCorrect,
         toggleIsAnswerSelectedCorrect,
         restartQuiz,
+        questionsList,
+        currentQuestion,
+        handleCorrectAnswer,
+        isAnswered,
+        toggleIsAnswered
       }}
     >
       {children}

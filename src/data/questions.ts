@@ -11,22 +11,43 @@ export interface IAnswers {
 
 export const questions: IQuestion[] = [
   {
-    question: 'teste1',
+    question: 'Quem descobriu o Brasil?',
     answers: [
       {
-        label: 'primeira pergunta',
+        label: 'Índios',
         isCorrect: false
       },
       {
-        label: 'segunda pergunta',
+        label: 'Joaquina Barbosa',
         isCorrect: false
       },
       {
-        label: 'terceira pergunta',
+        label: 'Pedro Alvares Cabral',
         isCorrect: true
       },
       {
-        label: 'quarta pergunta',
+        label: 'O Brasil não existe',
+        isCorrect: false
+      },
+    ]
+  },
+  {
+    question: 'Quem descobriu a Rússia?',
+    answers: [
+      {
+        label: 'Putin',
+        isCorrect: true
+      },
+      {
+        label: 'Bolsonaro',
+        isCorrect: false
+      },
+      {
+        label: 'Tiririca',
+        isCorrect: false
+      },
+      {
+        label: 'Ninguém ainda',
         isCorrect: false
       },
     ]
