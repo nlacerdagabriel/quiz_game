@@ -10,13 +10,9 @@ interface IAnswerProps {
   toggleAnswer: () => void;
 }
 
-export const Answer = ({
-  data,
-  changeScore,
-  toggleAnswer,
-}: IAnswerProps) => {
+export const Answer = ({ data, toggleAnswer }: IAnswerProps) => {
   const [background, setBackground] = useState("");
-  const { toggleLostModalVisible, toggleIsAnswerSelectedCorrect, isAnswered} =
+  const { toggleLostModalVisible, toggleIsAnswerSelectedCorrect, isAnswered, changeScore } =
     useContext(AppContext);
   const [disableButton, setDisableButton] = useState(false);
 
@@ -25,10 +21,10 @@ export const Answer = ({
       if (data.isCorrect) {
         setBackground(theme.colors.success);
       }
-      toggleDisableButton();
-    }else{
-      setBackground(theme.colors.white)
-      toggleDisableButton
+      toggleDisableButton(true);
+    } else {
+      setBackground(theme.colors.white);
+      toggleDisableButton(false);
     }
   }, [isAnswered]);
 
@@ -36,21 +32,22 @@ export const Answer = ({
     toggleAnswer();
 
     if (data.isCorrect) {
-      changeScore(true, 1);
       toggleIsAnswerSelectedCorrect(true);
+      changeScore(true)
     } else {
       setBackground(theme.colors.danger);
-      changeScore(false, 1);
       toggleIsAnswerSelectedCorrect(false);
       toggleLostModalVisible(true);
     }
   };
 
-  const toggleDisableButton = () => {
-    setDisableButton(!disableButton);
+  const toggleDisableButton = (toggle: boolean) => {
+    if (toggle) {
+      setDisableButton(true);
+    } else {
+      setDisableButton(false);
+    }
   };
-
-
 
   return (
     <Container

@@ -2,13 +2,15 @@ import styled from "styled-components"
 import { theme } from "../../theme"
 
 export const Container = styled.div`
-  padding: 3rem;
+  padding:4rem 2rem;
 
-  width: 30vw;
+width: 100%;
 
-  background-color: ${theme.colors.white};
+max-width: 500px;
 
-  border-radius: 0.5rem;
+background-color: ${theme.colors.white};
+
+border-radius: 0.5rem;
 `
 
 export const Title = styled.h1`

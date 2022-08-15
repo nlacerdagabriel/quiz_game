@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { theme } from "../../theme";
 
 export const Container = styled.div`
-  padding: 3rem;
+  padding:4rem 2rem;
 
-  width: 30vw;
+  width: 100%;
+
+  max-width: 500px;
 
   background-color: ${theme.colors.white};
 
@@ -13,8 +15,10 @@ export const Container = styled.div`
 
 export const Title = styled.h1`
   font-size: 1.5rem;
-  color: ${theme.colors.primary};
+  color: ${theme.colors.black};
   font-weight: 700;
 
   text-align: center;
+
+  line-height: 1.5rem;
 `

@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,12 +14,11 @@ import { AppContext } from "../../contexts/AppContext";
 import { theme } from "../../theme";
 import { useNavigate } from "react-router-dom";
 
-
-export const ModalLost = () => {
-  const { score, isModalLostVisible, restartQuiz, toggleLostModalVisible} =
+export const ModalWin = () => {
+  const { score, isModalWinVisible, restartQuiz, toggleWinModalVisible } =
     useContext(AppContext);
 
-  const [value, setValue] = useState(isModalLostVisible);
+  const [value, setValue] = useState(isModalWinVisible);
   const navigate = useNavigate();
 
   const [internalValue, setInternalValue] = useControllableState({
@@ -29,22 +27,21 @@ export const ModalLost = () => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isModalLostVisible) {
-        setInternalValue(!value);
-      }
-    }, 1000);
+    if (isModalWinVisible) {
+      setInternalValue(!value);
+    }
 
-  }, [isModalLostVisible]);
-  
+  }, [isModalWinVisible]);
+
   const onRestart = () => {
-    toggleLostModalVisible(false)
+    toggleWinModalVisible(false);
     navigate("/");
-    restartQuiz()
+    restartQuiz();
     setInternalValue(false);
   };
 
   return (
+    <>
       <Modal isCentered isOpen={internalValue} onClose={() => {}}>
         {
           <ModalOverlay
@@ -53,20 +50,21 @@ export const ModalLost = () => {
           />
         }
         <ModalContent>
-          <ModalHeader>You've lost!</ModalHeader>
+          <ModalHeader>You're the winner!!!</ModalHeader>
           <ModalBody>
-            <Text>Your current score: {score}</Text>
+            <Text>Your score: {score}</Text>
           </ModalBody>
           <ModalFooter>
             <Button
-              backgroundColor={theme.colors.danger}
+              backgroundColor={theme.colors.success}
               color={theme.colors.white}
               onClick={onRestart}
             >
-              Restart
+              Play again
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+    </>
   );
 };

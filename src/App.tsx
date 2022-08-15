@@ -1,4 +1,3 @@
-import { ModalLost } from "./components/ModalLost";
 import { AppProvider } from "./contexts/AppContext";
 import { Container, GlobalStyle } from "./GlobalStyle";
 import { ChakraProvider } from '@chakra-ui/react'

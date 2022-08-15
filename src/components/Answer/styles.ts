@@ -24,7 +24,7 @@ export const Container = styled.button`
 
   &:hover{
     color: ${theme.colors.white} !important;
-    background-color: ${theme.colors.primary};
+    background-color: ${theme.colors.primary} !important;
   }
 
   &:disabled, &:disabled &:hover{

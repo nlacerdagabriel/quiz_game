@@ -16,12 +16,12 @@ export const QuizCard = () => {
   } = useContext(AppContext);
 
   const toggleAnswer = () => {
-    toggleIsAnswered()
+    toggleIsAnswered(true)
   };
 
   const handleNextQuestion = () => {
     handleCorrectAnswer()
-    toggleIsAnswered()
+    toggleIsAnswered(false)
   }
 
   return (
