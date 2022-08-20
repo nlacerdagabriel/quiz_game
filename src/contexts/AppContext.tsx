@@ -1,6 +1,6 @@
-import React, { createContext, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { IQuestion, questions } from "../data/questions";
+import { getQuestion } from "../services/triviaApi";
 
 interface IProps {
   children: React.ReactNode;
@@ -16,8 +16,7 @@ interface IAppContextProps {
   isAnswerSelectedCorrect: boolean;
   toggleIsAnswerSelectedCorrect: (isCorrect: boolean) => void;
   restartQuiz: () => void;
-  questionsList: IQuestion[];
-  currentQuestion: IQuestion;
+  currentQuestion: any;
   handleCorrectAnswer: () => void;
   isAnswered: boolean;
   toggleIsAnswered: (toggle: boolean) => void;
@@ -33,11 +32,18 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
   const [isModalLostVisible, setIsModalLostVisible] = useState(false);
   const [isModalWinVisible, setIsModalWinVisible] = useState(false);
 
-
   const [isAnswerSelectedCorrect, setIsAnswerSelectedCorrect] = useState(false);
-  const [questionsList, setQuestionsList] = useState(questions);
-  const [currentQuestion, setCurrentQuestion] = useState(questionsList[0]);
+  const [currentQuestion, setCurrentQuestion] = useState({});
   const [isAnswered, setIsAnswered] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const response = await getQuestion();
+      setCurrentQuestion(response);
+    };
+
+    loadData();
+  }, []);
 
   const toggleIsAnswered = useCallback((toggle: boolean) => {
     if (toggle) {
@@ -45,7 +51,7 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
     } else {
       setIsAnswered(false);
     }
-  }, [])
+  }, []);
 
   const toggleLostModalVisible = useCallback((toggle: boolean) => {
     setIsModalLostVisible(toggle);
@@ -59,29 +65,20 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
     isCorrect ? setScore((prev) => prev + 1) : setScore((prev) => prev - 1);
   }, []);
 
-  const restartQuiz = useCallback(() => {
+  const restartQuiz = useCallback(async () => {
     setScore(0);
-    setIsAnswered(false)
-    setQuestionsList(questions)
-    setCurrentQuestion(questionsList[0])
+    setIsAnswered(false);
+
+    const response = await getQuestion();
+
+    setCurrentQuestion(response);
   }, []);
 
-  const handleCorrectAnswer = () => {
-    if(questionsList.length == 1){
-      toggleWinModalVisible(true)
-      return
-    }
+  const handleCorrectAnswer = async () => {
 
-      let newList: IQuestion[] = [];
+    const response = await getQuestion();
 
-      questionsList.filter((it) => {
-        if (it.question !== currentQuestion.question) {
-          newList.push(it)
-        }
-      });
-
-      setQuestionsList([...newList])
-      setCurrentQuestion(newList[0])
+    setCurrentQuestion(response);
   };
 
   const toggleIsAnswerSelectedCorrect = useCallback((isCorrect: boolean) => {
@@ -102,13 +99,12 @@ export const AppProvider: React.FC<IProps> = ({ children }) => {
         isAnswerSelectedCorrect,
         toggleIsAnswerSelectedCorrect,
         restartQuiz,
-        questionsList,
         currentQuestion,
         handleCorrectAnswer,
         isAnswered,
         toggleIsAnswered,
         isModalWinVisible,
-        toggleWinModalVisible
+        toggleWinModalVisible,
       }}
     >
       {children}

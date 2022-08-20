@@ -26,7 +26,7 @@ export const QuizCard = () => {
 
   return (
     <Container>
-      <Title>Selecione a opção correta!</Title>
+      <Title>Select the correct answer!</Title>
 
       <Question
         toggleAnswer={toggleAnswer}
