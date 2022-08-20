@@ -5,7 +5,9 @@ import { theme } from "../../theme";
 export const Container = styled.button`
   
   width: 100%;
-  height: 3rem;
+  height: 4rem;
+
+  text-align: start;
 
   display: flex;
   align-items: center;
